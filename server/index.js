@@ -18,6 +18,11 @@ const MODULES = {
 const LANG = { kk: 'Kazakh', ru: 'Russian' };
 const SAFETY = 'The user may be a child. Be kind and age-appropriate. Never ask for or repeat personal data (names, addresses, phones, school). Refuse unsafe topics gently. Do not give medical diagnoses.';
 
+app.get('/api/health', (_req, res) => {
+  res.set('Cache-Control', 'no-store');
+  res.json({ok:true, provider, configured: provider === 'gemini' ? Boolean(env.GEMINI_API_KEY) : provider === 'openai' ? Boolean(env.OPENAI_API_KEY) : false});
+});
+
 const hits = new Map();
 function limited(ip) {
   const now = Date.now(), a = (hits.get(ip) || []).filter(t => now - t < 60000);
@@ -126,4 +131,7 @@ app.post('/api/story/generate',async(req,res)=>{
 
 const dist = path.join(path.dirname(fileURLToPath(import.meta.url)), '../dist');
 if (fs.existsSync(dist)) { app.use(express.static(dist)); app.use((_q, r) => r.sendFile(path.join(dist, 'index.html'))); }
-app.listen(env.PORT || 8787, () => console.log('AI server on', env.PORT || 8787, 'provider:', provider));
+export default app;
+if (!env.VERCEL && process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  app.listen(env.PORT || 8787, () => console.log('AI server on', env.PORT || 8787, 'provider:', provider));
+}

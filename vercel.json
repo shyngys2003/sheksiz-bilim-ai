@@ -1,0 +1,21 @@
+{
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/adaptive/:role",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/social/:role",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/story/:role",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/section/:id",
+      "destination": "/index.html"
+    }
+  ]
+}
