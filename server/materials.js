@@ -3,7 +3,7 @@ const types = {pdf:'application/pdf',ppt:'application/vnd.ms-powerpoint',pptx:'a
 const roles=['defectologist','logoped'];
 const cats=['presentation','document','lesson','video'];
 const clean=(s,n)=>typeof s==='string'?s.trim().slice(0,n):'';
-function auth(req,role){const a=Buffer.from(req.headers['x-specialist-password']||''), b=Buffer.from(process.env[role==='logoped'?'LOGOPED_PASSWORD':'DEFECTOLOGIST_PASSWORD']||'');return b.length>=16&&a.length===b.length&&timingSafeEqual(a,b);}
+function auth(req,role){const a=Buffer.from(req.headers['x-specialist-password']||''), b=Buffer.from(process.env[role==='logoped'?'LOGOPED_PASSWORD':'DEFECTOLOGIST_PASSWORD']||'');return b.length>=8&&a.length===b.length&&timingSafeEqual(a,b);}
 export function mountMaterials(app){
  const hits=new Map();
  app.all('/api/materials',async(req,res)=>{
