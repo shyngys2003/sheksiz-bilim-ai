@@ -10,7 +10,7 @@ export function mountMaterials(app){
  res.set('Cache-Control','no-store');
  const base=process.env.SUPABASE_URL?.replace(/\/$/,'');const key=process.env.SUPABASE_SERVICE_ROLE_KEY;
  if(!base||!key)return res.status(503).json({error:'storage_not_configured'});
- const call=async(path,opts={})=>{const r=await fetch(base+path,{...opts,headers:{apikey:key,Authorization:'Bearer '+key,'Content-Type':'application/json',...opts.headers},signal:AbortSignal.timeout(20000)});if(!r.ok)throw Error('storage_error');return r.json().catch(()=>null);};
+ const call=async(path,opts={})=>{const r=await fetch(base+path,{...opts,headers:{apikey:key,...(key.startsWith('sb_secret_')?{}:{Authorization:'Bearer '+key}),'Content-Type':'application/json',...opts.headers},signal:AbortSignal.timeout(20000)});if(!r.ok)throw Error('storage_error');return r.json().catch(()=>null);};
  const table='/rest/v1/school_materials';
  try{
  if(req.method==='GET'){const data=await call(table+'?select=*&order=created_at.desc&limit=200');return res.json({items:data.map(x=>({...x,download:x.path?base+'/storage/v1/object/public/school-materials/'+x.path:null}))});}
