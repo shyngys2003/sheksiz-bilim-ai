@@ -13,7 +13,5 @@ const ru: Record<keyof typeof kk, string> = {
 };
 export type HKey = keyof typeof kk;
 export const useHT = () => { const { lang } = useApp(); const d = lang === 'kk' ? kk : ru; return (k: HKey) => d[k]; };
-export const SECTIONS: { n: number; to: string }[] = [
-  { n: 1, to: '/section/udl' }, { n: 2, to: '#ai' }, { n: 3, to: '/adaptive/student' }, { n: 4, to: '/section/lessons' },
-  { n: 5, to: '/section/needs' }, { n: 6, to: '/adaptive/teacher' }, { n: 7, to: '/adaptive/teacher?tab=dash' }, { n: 8, to: '/section/parents' },
-];
+export const SECTION_IDS = ['udl','ai','games','lessons','needs','tasks','progress','parents'];
+export const SECTIONS = SECTION_IDS.map((id,i)=>({n:i+1,to:'/section/'+id}));
