@@ -3,7 +3,7 @@ import { useApp } from '../ctx';
 import { MODULES } from '../modules';
 import { SECTIONS, useHT, type HKey } from '../home-text';
 export default function Home() {
-  const { t } = useApp();
+  const { t, lang } = useApp();
   const h = useHT();
   return (
     <section>
@@ -14,6 +14,7 @@ export default function Home() {
           return s.to.startsWith('#') ? <a key={s.n} className="tile" href={s.to}>{body}</a> : <Link key={s.n} className="tile" to={s.to}>{body}</Link>;
         })}
       </div>
+      <Link className="tile" style={{marginTop:16}} to="/materials"><strong>📚 {lang==='kk'?'Мамандар кабинеті':'Кабинет специалистов'}</strong><span>{lang==='kk'?'Дефектолог және логопед материалдары':'Материалы дефектолога и логопеда'}</span></Link>
       <h2 id="ai" className="aihead">{h('aiTitle')}</h2>
       <div className="grid">
         {MODULES.map(m => (

@@ -3,6 +3,7 @@ import { NavLink, Route, Routes } from 'react-router-dom';
 import { useApp } from './ctx';
 import { MODULES } from './modules';
 import { A11yPanel } from './components/UI';
+import Materials from './pages/Materials';
 import Home from './pages/Home';
 import Section from './pages/Section';
 import ModulePage from './pages/ModulePage';
@@ -21,6 +22,7 @@ export default function App() {
         <NavLink to="/" className="brand">🌱 {t('app')}</NavLink>
         <nav className="nav" aria-label="main">
           <NavLink to="/" end>{t('home')}</NavLink>
+          <NavLink to="/materials">📚 {lang === 'kk' ? 'Мамандар' : 'Специалисты'}</NavLink>
           {MODULES.map(m => <NavLink key={m.id} to={`/${m.id}/student`}>{m.icon} {t(m.title)}</NavLink>)}
         </nav>
         <div className="tools">
@@ -32,6 +34,7 @@ export default function App() {
       <main id="main">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/materials" element={<Materials />} />
           <Route path="/section/:id" element={<Section />} />
           <Route path="/adaptive/student" element={<StudentAdaptive />} />
           <Route path="/adaptive/teacher" element={<TeacherAdaptive />} />

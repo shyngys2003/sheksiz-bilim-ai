@@ -1,3 +1,4 @@
+import { mountMaterials } from './materials.js';
 import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -128,6 +129,8 @@ app.post('/api/story/generate',async(req,res)=>{
   if(limited(req.ip))return res.status(429).json({error:'rate_limited'});const b=req.body||{};if(!LANG[b.lang]||!str(b.topic,200).trim())return res.status(400).json({error:'bad_request'});
   try{const count=Math.min(8,Math.max(4,Number(b.count)||5));const answer=await generate(`${SAFETY} Create a respectful sequential social story in ${LANG[b.lang]} for a child. Return only JSON {"title":"title","scenes":[{"text":"short first-person sentence","emoji":"one relevant emoji"}]}. Exactly ${count} scenes. Promote autonomy, not forced compliance.`,JSON.stringify({topic:scrub(str(b.topic,200)),grade:Number(b.grade)||3}),true);if(!answer)return res.status(503).json({error:'ai_unavailable'});const j=JSON.parse(answer);if(!Array.isArray(j.scenes)||j.scenes.length!==count)throw Error();const scenes=j.scenes.map(x=>({text:str(x.text,300),emoji:str(x.emoji,24)}));if(scenes.some(x=>!x.text))throw Error();res.json({title:str(j.title,120),scenes});}catch{res.status(502).json({error:'upstream_failed'});}
 });
+
+mountMaterials(app);
 
 const dist = path.join(path.dirname(fileURLToPath(import.meta.url)), '../dist');
 if (fs.existsSync(dist)) { app.use(express.static(dist)); app.use((_q, r) => r.sendFile(path.join(dist, 'index.html'))); }
